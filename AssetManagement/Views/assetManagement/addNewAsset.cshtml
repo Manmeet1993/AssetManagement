@@ -1,0 +1,114 @@
+﻿@model AssetManagement.Models.multiTable
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2 align="center">Add Asset Details</h2>
+
+
+@using (Html.BeginForm("addNewAsset", "assetManagement", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.assetDetails.asset_type_id, "Asset Type", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.assetDetails.asset_type_id, ViewBag.assetType_List as SelectList, "Please select", new { @class = "form-control dropdown" })
+                @Html.ValidationMessageFor(model => model.assetDetails.asset_type_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.assetDetails.serial_number, "Serial Number", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.assetDetails.serial_number, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.assetDetails.serial_number, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.assetDetails.model, "Model", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.assetDetails.model, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.assetDetails.model, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.assetDetails.brand, "Brand", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.assetDetails.brand, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.assetDetails.brand, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.assetDetails.imei, "IMEI/Product No", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.assetDetails.imei, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.assetDetails.imei, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.assetDetails.description, "Description", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.assetDetails.description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.assetDetails.description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.assetDetails.purchase_date, "Purchase Date", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.assetDetails.purchase_date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.assetDetails.purchase_date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.costDetails.cost_type, "Cost Type", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.costDetails.cost_type_id, ViewBag.costType_List as SelectList, "Please select", new { @class = "form-control dropdown" })
+                @Html.ValidationMessageFor(model => model.costDetails.cost_type_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.assetDetails.cost_id, "Cost", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.costDetails.cost, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.assetDetails.cost_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.costDetails.bill, "Invoice", htmlAttributes: new { @class = "required control-label col-md-4" })
+            <div class="col-md-8">
+                <input type="file" id="invoice" name="upload" style="background:none" class="required" />
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div align="center">
+                @using (Html.BeginForm("addNewAsset", "assetManagement", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <input type="submit" value="Add" align="center" class="btn btn-default" />
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="da0e377f13e24880899730ed86fbe1b3" Name="Diagram1">
+        <EntityTypeShape EntityType="assetManagementModel.asset_details" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="assetManagementModel.asset_type" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="assetManagementModel.cost_details" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="assetManagementModel.cost_type" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="assetManagementModel.employee" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="assetManagementModel.software_details" Width="1.5" PointX="8.25" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="assetManagementModel.fk_asset_details_asset_type" ManuallyRouted="false" />
+        <AssociationConnector Association="assetManagementModel.fk_asset_details_cost_details1" ManuallyRouted="false" />
+        <AssociationConnector Association="assetManagementModel.fk_asset_details_employee1" ManuallyRouted="false" />
+        <AssociationConnector Association="assetManagementModel.fk_cost_details_cost_type1" ManuallyRouted="false" />
+        <AssociationConnector Association="assetManagementModel.fk_software_details_cost_details1" ManuallyRouted="false" />
+        <AssociationConnector Association="assetManagementModel.employees_softwares" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

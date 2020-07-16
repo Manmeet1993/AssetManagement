@@ -1,0 +1,470 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="assetManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="asset_details">
+          <Key>
+            <PropertyRef Name="asset_id" />
+          </Key>
+          <Property Name="asset_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="serial_number" Type="varchar" MaxLength="155" />
+          <Property Name="model" Type="varchar" MaxLength="155" />
+          <Property Name="brand" Type="varchar" MaxLength="155" />
+          <Property Name="imei" Type="varchar" MaxLength="45" />
+          <Property Name="description" Type="varchar" MaxLength="555" />
+          <Property Name="purchase_date" Type="varchar" MaxLength="45" />
+          <Property Name="asset_type_id" Type="int" Nullable="false" />
+          <Property Name="employee_id" Type="int" />
+          <Property Name="cost_id" Type="int" />
+        </EntityType>
+        <EntityType Name="asset_type">
+          <Key>
+            <PropertyRef Name="type_id" />
+          </Key>
+          <Property Name="type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cost_details">
+          <Key>
+            <PropertyRef Name="cost_id" />
+          </Key>
+          <Property Name="cost_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cost" Type="varchar" MaxLength="45" />
+          <Property Name="bill" Type="varbinary(max)" />
+          <Property Name="cost_type_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cost_type">
+          <Key>
+            <PropertyRef Name="type_id" />
+          </Key>
+          <Property Name="type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="employee_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="155" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="155" />
+          <Property Name="designation" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="email_id" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="phone_number" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="employees_softwares">
+          <Key>
+            <PropertyRef Name="software_id" />
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="software_id" Type="int" Nullable="false" />
+          <Property Name="employee_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="software_details">
+          <Key>
+            <PropertyRef Name="software_id" />
+          </Key>
+          <Property Name="software_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="145" Nullable="false" />
+          <Property Name="valid_from" Type="datetime" Nullable="false" />
+          <Property Name="valid_till" Type="datetime" Nullable="false" />
+          <Property Name="cost_id" Type="int" />
+        </EntityType>
+        <Association Name="fk_asset_details_asset_type">
+          <End Role="asset_type" Type="Self.asset_type" Multiplicity="1" />
+          <End Role="asset_details" Type="Self.asset_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="asset_type">
+              <PropertyRef Name="type_id" />
+            </Principal>
+            <Dependent Role="asset_details">
+              <PropertyRef Name="asset_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_asset_details_cost_details1">
+          <End Role="cost_details" Type="Self.cost_details" Multiplicity="0..1" />
+          <End Role="asset_details" Type="Self.asset_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cost_details">
+              <PropertyRef Name="cost_id" />
+            </Principal>
+            <Dependent Role="asset_details">
+              <PropertyRef Name="cost_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_asset_details_employee1">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="asset_details" Type="Self.asset_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="asset_details">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_cost_details_cost_type1">
+          <End Role="cost_type" Type="Self.cost_type" Multiplicity="1" />
+          <End Role="cost_details" Type="Self.cost_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cost_type">
+              <PropertyRef Name="type_id" />
+            </Principal>
+            <Dependent Role="cost_details">
+              <PropertyRef Name="cost_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_software_details_cost_details1">
+          <End Role="cost_details" Type="Self.cost_details" Multiplicity="0..1" />
+          <End Role="software_details" Type="Self.software_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cost_details">
+              <PropertyRef Name="cost_id" />
+            </Principal>
+            <Dependent Role="software_details">
+              <PropertyRef Name="cost_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_software_details_has_employee_employee1">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="employees_softwares" Type="Self.employees_softwares" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="employees_softwares">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_software_details_has_employee_software_details1">
+          <End Role="software_details" Type="Self.software_details" Multiplicity="1" />
+          <End Role="employees_softwares" Type="Self.employees_softwares" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="software_details">
+              <PropertyRef Name="software_id" />
+            </Principal>
+            <Dependent Role="employees_softwares">
+              <PropertyRef Name="software_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="assetManagementModelStoreContainer">
+          <EntitySet Name="asset_details" EntityType="Self.asset_details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="asset_type" EntityType="Self.asset_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cost_details" EntityType="Self.cost_details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cost_type" EntityType="Self.cost_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employee" EntityType="Self.employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employees_softwares" EntityType="Self.employees_softwares" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="software_details" EntityType="Self.software_details" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_asset_details_asset_type" Association="Self.fk_asset_details_asset_type">
+            <End Role="asset_type" EntitySet="asset_type" />
+            <End Role="asset_details" EntitySet="asset_details" />
+          </AssociationSet>
+          <AssociationSet Name="fk_asset_details_cost_details1" Association="Self.fk_asset_details_cost_details1">
+            <End Role="cost_details" EntitySet="cost_details" />
+            <End Role="asset_details" EntitySet="asset_details" />
+          </AssociationSet>
+          <AssociationSet Name="fk_asset_details_employee1" Association="Self.fk_asset_details_employee1">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="asset_details" EntitySet="asset_details" />
+          </AssociationSet>
+          <AssociationSet Name="fk_cost_details_cost_type1" Association="Self.fk_cost_details_cost_type1">
+            <End Role="cost_type" EntitySet="cost_type" />
+            <End Role="cost_details" EntitySet="cost_details" />
+          </AssociationSet>
+          <AssociationSet Name="fk_software_details_cost_details1" Association="Self.fk_software_details_cost_details1">
+            <End Role="cost_details" EntitySet="cost_details" />
+            <End Role="software_details" EntitySet="software_details" />
+          </AssociationSet>
+          <AssociationSet Name="fk_software_details_has_employee_employee1" Association="Self.fk_software_details_has_employee_employee1">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="employees_softwares" EntitySet="employees_softwares" />
+          </AssociationSet>
+          <AssociationSet Name="fk_software_details_has_employee_software_details1" Association="Self.fk_software_details_has_employee_software_details1">
+            <End Role="software_details" EntitySet="software_details" />
+            <End Role="employees_softwares" EntitySet="employees_softwares" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="assetManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="asset_details">
+          <Key>
+            <PropertyRef Name="asset_id" />
+          </Key>
+          <Property Name="asset_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="serial_number" Type="String" MaxLength="155" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="155" FixedLength="false" Unicode="false" />
+          <Property Name="brand" Type="String" MaxLength="155" FixedLength="false" Unicode="false" />
+          <Property Name="imei" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="555" FixedLength="false" Unicode="false" />
+          <Property Name="purchase_date" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="asset_type_id" Type="Int32" Nullable="false" />
+          <Property Name="employee_id" Type="Int32" />
+          <Property Name="cost_id" Type="Int32" />
+          <NavigationProperty Name="asset_type" Relationship="Self.fk_asset_details_asset_type" FromRole="asset_details" ToRole="asset_type" />
+          <NavigationProperty Name="cost_details" Relationship="Self.fk_asset_details_cost_details1" FromRole="asset_details" ToRole="cost_details" />
+          <NavigationProperty Name="employee" Relationship="Self.fk_asset_details_employee1" FromRole="asset_details" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="asset_type">
+          <Key>
+            <PropertyRef Name="type_id" />
+          </Key>
+          <Property Name="type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="asset_details" Relationship="Self.fk_asset_details_asset_type" FromRole="asset_type" ToRole="asset_details" />
+        </EntityType>
+        <EntityType Name="cost_details">
+          <Key>
+            <PropertyRef Name="cost_id" />
+          </Key>
+          <Property Name="cost_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cost" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="bill" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="cost_type_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="asset_details" Relationship="Self.fk_asset_details_cost_details1" FromRole="cost_details" ToRole="asset_details" />
+          <NavigationProperty Name="cost_type" Relationship="Self.fk_cost_details_cost_type1" FromRole="cost_details" ToRole="cost_type" />
+          <NavigationProperty Name="software_details" Relationship="Self.fk_software_details_cost_details1" FromRole="cost_details" ToRole="software_details" />
+        </EntityType>
+        <EntityType Name="cost_type">
+          <Key>
+            <PropertyRef Name="type_id" />
+          </Key>
+          <Property Name="type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="cost_details" Relationship="Self.fk_cost_details_cost_type1" FromRole="cost_type" ToRole="cost_details" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="employee_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" MaxLength="155" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="155" FixedLength="false" Unicode="false" />
+          <Property Name="designation" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email_id" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phone_number" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="asset_details" Relationship="Self.fk_asset_details_employee1" FromRole="employee" ToRole="asset_details" />
+          <NavigationProperty Name="software_details" Relationship="Self.employees_softwares" FromRole="employee" ToRole="software_details" />
+        </EntityType>
+        <EntityType Name="software_details">
+          <Key>
+            <PropertyRef Name="software_id" />
+          </Key>
+          <Property Name="software_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="145" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="valid_from" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="valid_till" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="cost_id" Type="Int32" />
+          <NavigationProperty Name="cost_details" Relationship="Self.fk_software_details_cost_details1" FromRole="software_details" ToRole="cost_details" />
+          <NavigationProperty Name="employees" Relationship="Self.employees_softwares" FromRole="software_details" ToRole="employee" />
+        </EntityType>
+        <Association Name="fk_asset_details_asset_type">
+          <End Role="asset_type" Type="Self.asset_type" Multiplicity="1" />
+          <End Role="asset_details" Type="Self.asset_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="asset_type">
+              <PropertyRef Name="type_id" />
+            </Principal>
+            <Dependent Role="asset_details">
+              <PropertyRef Name="asset_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_asset_details_cost_details1">
+          <End Role="cost_details" Type="Self.cost_details" Multiplicity="0..1" />
+          <End Role="asset_details" Type="Self.asset_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cost_details">
+              <PropertyRef Name="cost_id" />
+            </Principal>
+            <Dependent Role="asset_details">
+              <PropertyRef Name="cost_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_asset_details_employee1">
+          <End Role="employee" Type="Self.employee" Multiplicity="0..1" />
+          <End Role="asset_details" Type="Self.asset_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="asset_details">
+              <PropertyRef Name="employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_cost_details_cost_type1">
+          <End Role="cost_type" Type="Self.cost_type" Multiplicity="1" />
+          <End Role="cost_details" Type="Self.cost_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cost_type">
+              <PropertyRef Name="type_id" />
+            </Principal>
+            <Dependent Role="cost_details">
+              <PropertyRef Name="cost_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_software_details_cost_details1">
+          <End Role="cost_details" Type="Self.cost_details" Multiplicity="0..1" />
+          <End Role="software_details" Type="Self.software_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cost_details">
+              <PropertyRef Name="cost_id" />
+            </Principal>
+            <Dependent Role="software_details">
+              <PropertyRef Name="cost_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="employees_softwares">
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <End Role="software_details" Type="Self.software_details" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="assetManagementEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="asset_details" EntityType="Self.asset_details" />
+          <EntitySet Name="asset_type" EntityType="Self.asset_type" />
+          <EntitySet Name="cost_details" EntityType="Self.cost_details" />
+          <EntitySet Name="cost_type" EntityType="Self.cost_type" />
+          <EntitySet Name="employees" EntityType="Self.employee" />
+          <EntitySet Name="software_details" EntityType="Self.software_details" />
+          <AssociationSet Name="fk_asset_details_asset_type" Association="Self.fk_asset_details_asset_type">
+            <End Role="asset_type" EntitySet="asset_type" />
+            <End Role="asset_details" EntitySet="asset_details" />
+          </AssociationSet>
+          <AssociationSet Name="fk_asset_details_cost_details1" Association="Self.fk_asset_details_cost_details1">
+            <End Role="cost_details" EntitySet="cost_details" />
+            <End Role="asset_details" EntitySet="asset_details" />
+          </AssociationSet>
+          <AssociationSet Name="fk_asset_details_employee1" Association="Self.fk_asset_details_employee1">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="asset_details" EntitySet="asset_details" />
+          </AssociationSet>
+          <AssociationSet Name="fk_cost_details_cost_type1" Association="Self.fk_cost_details_cost_type1">
+            <End Role="cost_type" EntitySet="cost_type" />
+            <End Role="cost_details" EntitySet="cost_details" />
+          </AssociationSet>
+          <AssociationSet Name="fk_software_details_cost_details1" Association="Self.fk_software_details_cost_details1">
+            <End Role="cost_details" EntitySet="cost_details" />
+            <End Role="software_details" EntitySet="software_details" />
+          </AssociationSet>
+          <AssociationSet Name="employees_softwares" Association="Self.employees_softwares">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="software_details" EntitySet="software_details" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="assetManagementModelStoreContainer" CdmEntityContainer="assetManagementEntities">
+          <EntitySetMapping Name="asset_details">
+            <EntityTypeMapping TypeName="assetManagementModel.asset_details">
+              <MappingFragment StoreEntitySet="asset_details">
+                <ScalarProperty Name="asset_id" ColumnName="asset_id" />
+                <ScalarProperty Name="serial_number" ColumnName="serial_number" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="brand" ColumnName="brand" />
+                <ScalarProperty Name="imei" ColumnName="imei" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="purchase_date" ColumnName="purchase_date" />
+                <ScalarProperty Name="asset_type_id" ColumnName="asset_type_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="cost_id" ColumnName="cost_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="asset_type">
+            <EntityTypeMapping TypeName="assetManagementModel.asset_type">
+              <MappingFragment StoreEntitySet="asset_type">
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cost_details">
+            <EntityTypeMapping TypeName="assetManagementModel.cost_details">
+              <MappingFragment StoreEntitySet="cost_details">
+                <ScalarProperty Name="cost_id" ColumnName="cost_id" />
+                <ScalarProperty Name="cost" ColumnName="cost" />
+                <ScalarProperty Name="bill" ColumnName="bill" />
+                <ScalarProperty Name="cost_type_id" ColumnName="cost_type_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cost_type">
+            <EntityTypeMapping TypeName="assetManagementModel.cost_type">
+              <MappingFragment StoreEntitySet="cost_type">
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employees">
+            <EntityTypeMapping TypeName="assetManagementModel.employee">
+              <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="designation" ColumnName="designation" />
+                <ScalarProperty Name="email_id" ColumnName="email_id" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="software_details">
+            <EntityTypeMapping TypeName="assetManagementModel.software_details">
+              <MappingFragment StoreEntitySet="software_details">
+                <ScalarProperty Name="software_id" ColumnName="software_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="valid_from" ColumnName="valid_from" />
+                <ScalarProperty Name="valid_till" ColumnName="valid_till" />
+                <ScalarProperty Name="cost_id" ColumnName="cost_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="employees_softwares" TypeName="assetManagementModel.employees_softwares" StoreEntitySet="employees_softwares">
+            <EndProperty Name="employee">
+              <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+            </EndProperty>
+            <EndProperty Name="software_details">
+              <ScalarProperty Name="software_id" ColumnName="software_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

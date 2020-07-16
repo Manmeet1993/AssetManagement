@@ -1,0 +1,60 @@
+﻿@using AssetManagement.Models
+
+@{
+    assetManagementEntities entities = new assetManagementEntities();
+}
+
+<h2 align="center">Employee List</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>
+            Designation
+        </th>
+        <th>
+            Email ID
+        </th>
+        <th>
+            Phone Number
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+    @if (true)
+    {
+        foreach (var item in entities.employees)
+        {
+            <tr>
+                <td>
+                    @Convert.ToString(item.first_name)
+                </td>
+                <td>
+                    @Convert.ToString(item.last_name)
+                </td>
+                <td>
+                    @Convert.ToString(item.designation)
+                </td>
+                <td>
+                    @Convert.ToString(item.email_id)
+                </td>
+                <td>
+                    @Convert.ToString(item.phone_number)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.employee_id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.employee_id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.employee_id })
+                </td>
+            </tr>
+
+        }
+    }
+
+</table>
