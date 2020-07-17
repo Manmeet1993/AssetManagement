@@ -3,6 +3,8 @@
 namespace AssetManagement.Controllers
 {
     using AssetManagement.Models;
+    using System;
+    using System.Data.Entity;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -20,21 +22,45 @@ namespace AssetManagement.Controllers
             var costTypeList = entities.cost_type.ToList();
             SelectList costlist = new SelectList(costTypeList, "type_id", "type");
             ViewBag.costType_List = costlist;
-        }
-        public ActionResult viewAllAssets ()
-        {
-            return View();
+
+            var employeeList = entities.employees.ToList();
+            SelectList employeList = new SelectList(employeeList, "employee_id", "email_id");
+            ViewBag.employee_List = employeList;
         }
 
-        // GET: assetManagement/Details/5
         public ActionResult Details(int id)
+        {
+            Session["detailsId"] = id;
+            return View();
+        }
+        public ActionResult viewAllAssets()
         {
             return View();
         }
 
         public ActionResult assignAsset(int id)
         {
+            Session["assetId"] = id;
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult assignAsset(int id, multiTable collection)
+        {
+            try
+            {
+                var asset = entities.asset_details.Find(id);
+                asset.employee_id = collection.assetDetails.employee_id;
+                entities.Entry(asset).State = EntityState.Modified;
+                entities.SaveChanges();
+                return View();
+            }
+            catch
+            {
+
+                return View();
+            }
         }
 
 
@@ -52,7 +78,7 @@ namespace AssetManagement.Controllers
             {
                 if (upload != null && upload.ContentLength > 0)
                 {
-                   
+
                     if (collection.costDetails != null)
                     {
                         using (var reader = new System.IO.BinaryReader(upload.InputStream))
@@ -62,9 +88,7 @@ namespace AssetManagement.Controllers
                         entities.cost_details.Add(collection.costDetails);
                         collection.assetDetails.cost_id = collection.costDetails.cost_id;
                         entities.asset_details.Add(collection.assetDetails);
-                       
-                        //entities.SaveChanges();
-                        Session["documentAdded"] = "Yes";
+                        entities.SaveChanges();
                     }
                 }
 
@@ -76,21 +100,33 @@ namespace AssetManagement.Controllers
             }
         }
 
-        // GET: assetManagement/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var asset = entities.asset_details.Find(id);
+            multiTable table = new multiTable();
+            table.assetDetails = asset;
+            return View(table);
         }
 
-        // POST: assetManagement/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, multiTable collection, string Cancel, string Delete)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                if (Cancel != null)
+                {
+                    return RedirectToAction("viewAllAssets");
+                }
+                else if (Delete != null)
+                {
+                    DeleteFunc(id);
+                }
+                else
+                {
+                    entities.Entry(collection.assetDetails).State = EntityState.Modified;
+                    entities.SaveChanges();
+                }
+                return View();
             }
             catch
             {
@@ -98,25 +134,17 @@ namespace AssetManagement.Controllers
             }
         }
 
-        // GET: assetManagement/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: assetManagement/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public void DeleteFunc(int id)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                var asset = entities.asset_details.Find(id);
+                entities.asset_details.Remove(asset);
+                entities.Entry(asset).State = EntityState.Modified;
+                entities.SaveChanges();
             }
             catch
             {
-                return View();
             }
         }
     }

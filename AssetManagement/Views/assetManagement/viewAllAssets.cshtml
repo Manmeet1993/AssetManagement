@@ -5,69 +5,51 @@
 }
 
 <h2 align="center">All Assets</h2>
+<div align="right">
+    @Html.ActionLink("Add New Asset", "addNewAsset")
+</div>
 
-
-<table class="table">
-    <tr>
+<table class="table" >
+    <tr >
         <th>
-            Serial Number
-        </th>
-        <th>
-            Model
+            Type
         </th>
         <th>
             Brand
         </th>
         <th>
-            IMEI/Product No.
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            Purchase Date
-        </th>
-        <th>
-            Type
+            Assigned To
         </th>
         <th>
             Cost
         </th>
 
-        <th></th>
+        <th>
+            Actions
+        </th>
     </tr>
 
     @foreach (var item in entities.asset_details)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.serial_number)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.model)
+                @Html.DisplayFor(modelItem => item.asset_type.type)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.brand)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.imei)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.purchase_date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.asset_type.type)
+                @Html.DisplayFor(modelItem => item.employee.first_name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.cost_details.cost)
             </td>
+           
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.asset_id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.asset_id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.asset_id })
+                @Html.ActionLink("Assign", "assignAsset", new { id = item.asset_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.asset_id })
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.asset_id }, new { onclick = "return confirm('Do you really want to delete?')" })*@
             </td>
         </tr>
     }

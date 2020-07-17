@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
 using AssetManagement.Models;
 
@@ -50,21 +51,33 @@ namespace AssetManagement.Controllers
             }
         }
 
-        // GET: employeeDetails/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var employeeDetails = entities.employees.Find(id);
+            multiTable table = new multiTable();
+            table.employee = employeeDetails;
+            return View(table);
         }
 
-        // POST: employeeDetails/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, multiTable collection,string Cancel, string Delete)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                if (Cancel != null)
+                {
+                    return RedirectToAction("viewEmployeeList");
+                }
+                else if (Delete != null)
+                {
+                    DeleteFunc(id);
+                }
+                else
+                {
+                    entities.Entry(collection.employee).State = EntityState.Modified;
+                    entities.SaveChanges();
+                }
+                return RedirectToAction("viewEmployeeList");
             }
             catch
             {
@@ -72,25 +85,17 @@ namespace AssetManagement.Controllers
             }
         }
 
-        // GET: employeeDetails/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: employeeDetails/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public void DeleteFunc(int id)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                var employeeDetails = entities.employees.Find(id);
+                entities.employees.Remove(employeeDetails);
+                entities.Entry(employeeDetails).State = EntityState.Modified;
+                entities.SaveChanges();
             }
             catch
             {
-                return View();
             }
         }
     }

@@ -295,6 +295,10 @@
     <Content Include="Views\employeeDetails\viewEmployeeList.cshtml" />
     <Content Include="Views\assetManagement\addNewAsset.cshtml" />
     <Content Include="Views\assetManagement\viewAllAssets.cshtml" />
+    <Content Include="Views\assetManagement\assignAsset.cshtml" />
+    <Content Include="Views\assetManagement\Edit.cshtml" />
+    <Content Include="Views\assetManagement\Details.cshtml" />
+    <Content Include="Views\employeeDetails\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -5,6 +5,9 @@
 }
 
 <h2 align="center">Employee List</h2>
+<div align="right">
+    @Html.ActionLink("Add New Employee", "addNewEmployee")
+</div>
 
 <table class="table">
     <tr>
@@ -27,34 +30,28 @@
             Actions
         </th>
     </tr>
-    @if (true)
+    @foreach (var item in entities.employees)
     {
-        foreach (var item in entities.employees)
-        {
-            <tr>
-                <td>
-                    @Convert.ToString(item.first_name)
-                </td>
-                <td>
-                    @Convert.ToString(item.last_name)
-                </td>
-                <td>
-                    @Convert.ToString(item.designation)
-                </td>
-                <td>
-                    @Convert.ToString(item.email_id)
-                </td>
-                <td>
-                    @Convert.ToString(item.phone_number)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.employee_id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.employee_id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.employee_id })
-                </td>
-            </tr>
-
-        }
+        <tr>
+            <td>
+                @Convert.ToString(item.first_name)
+            </td>
+            <td>
+                @Convert.ToString(item.last_name)
+            </td>
+            <td>
+                @Convert.ToString(item.designation)
+            </td>
+            <td>
+                @Convert.ToString(item.email_id)
+            </td>
+            <td>
+                @Convert.ToString(item.phone_number)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.employee_id })
+            </td>
+        </tr>
     }
 
 </table>

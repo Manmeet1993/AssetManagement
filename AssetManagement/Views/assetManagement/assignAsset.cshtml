@@ -1,0 +1,84 @@
+﻿@using AssetManagement.Models
+@model AssetManagement.Models.multiTable
+
+@{
+    ViewBag.Title = "assignAsset";
+    int assetId = Convert.ToInt32(Session["assetId"]);
+    assetManagementEntities entities = new assetManagementEntities();
+    var asset = entities.asset_details.Find(assetId);
+}
+
+<h2 align="center">Assign Asset</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt align="center">
+            Serial Number
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.serial_number)
+        </dd>
+
+        <dt>
+            Model
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.model)
+        </dd>
+
+        <dt>
+            Brand
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.brand)
+        </dd>
+
+        <dt>
+            IMEI/Product No
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.imei)
+        </dd>
+
+        <dt>
+            Description
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.description)
+        </dd>
+
+        <dt>
+            Purchase Date
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.purchase_date)
+        </dd>
+
+    </dl>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.assetDetails.employee_id, "Employee Name", htmlAttributes: new { @class = "required control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.assetDetails.employee_id, ViewBag.employee_List as SelectList, "Please select", new { @class = "form-control dropdown" })
+                @Html.ValidationMessageFor(model => model.assetDetails.employee_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="center-block centerBlock">
+        <div class="centerBlock" align="center">
+            <input type="submit" value="Next" class="btn btn-default" name="Next" id="Next" />
+        </div>
+    </div>
+}

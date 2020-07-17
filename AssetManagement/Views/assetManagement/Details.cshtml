@@ -1,0 +1,91 @@
+﻿@using AssetManagement.Models
+@model AssetManagement.Models.multiTable
+
+@{
+    ViewBag.Title = "Details";
+    int assetId = Convert.ToInt32(Session["detailsId"]);
+    assetManagementEntities entities = new assetManagementEntities();
+    var asset = entities.asset_details.Find(assetId);
+}
+
+<h2 align="center">Asset Details</h2>
+
+
+<div>
+    <hr />
+    <dl class="dl-horizontal" text-align="center" >
+        <dt>
+            Serial Number
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.serial_number)
+        </dd>
+
+        <dt>
+            Model
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.model)
+        </dd>
+
+        <dt>
+            Brand
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.brand)
+        </dd>
+
+        <dt>
+            IMEI/Product Number
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.imei)
+        </dd>
+
+        <dt>
+            Description
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.description)
+        </dd>
+
+        <dt>
+            Purchase Date
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.purchase_date)
+        </dd>
+
+        <dt>
+            Type
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.asset_type.type)
+        </dd>
+
+        <dt>
+            Cost
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.cost_details.cost)
+        </dd>
+
+        <dt>
+            Assigned To
+        </dt>
+
+        <dd>
+            @Convert.ToString(asset.employee.first_name)
+        </dd>
+
+    </dl>
+</div>
+
